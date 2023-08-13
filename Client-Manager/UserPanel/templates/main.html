@@ -1,0 +1,213 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>GameGuard | گیم‌گارد</title>
+        <link rel="stylesheet" href="{% static 'main.css' %}">
+
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'icons/apple-touch-icon.png' %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'icons/favicon-32x32.png' %}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'icons/favicon-16x16.png' %}">
+        <link rel="manifest" href="{% static 'icons/site.webmanifest' %}">
+        <link rel="shortcut icon" href="{% static 'icons/favicon.ico' %}">
+        <meta name="apple-mobile-web-app-title" content="GameGuard">
+        <meta name="application-name" content="GameGuard">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="msapplication-config" content="{% static 'icons/browserconfig.xml' %}">
+        <meta name="theme-color" content="#ffffff">
+    </head>
+
+    <body>
+        <div class="container" id="main-container">
+            <article class="textPara">
+                <figure>
+                    <img width="10%" class="image-center" src="{% static 'logo.jpg' %}" alt="logo">
+                </figure>
+                <main>
+                    <p>
+                        Welcome to GameGuard, your premier destination for all your online gaming needs.
+                        Our cutting-edge platform utilizes advanced technology to provide you with a smooth and secure gaming experience.
+                    </p>
+                    <p>
+                        We offer flexible plans that cater to your unique gaming preferences.
+                        Our plans include a <b>usage duration</b> and <b>traffic limit</b>, which can be easily renewed.
+                        Please note that if your usage duration is exceeded <b>or</b> your traffic limit is reached, your service will expire.
+                        However, any unused traffic <b>will be saved</b> and can be used in the following month provided that you renew your plan <b>before</b> the expiration date.
+                    </p>
+                    <p>
+                        You can renew your subscription when your remaining traffic is <b>below 1GB</b> or when your expiration date is approaching within the <b>next 3 days</b>.
+                        It's important to note that if you fail to renew your subscription before the expiration date, <b>your account will be deleted</b> within 3 days following the expiration date.
+                    </p>
+                    <p>
+                        It's important to note that payment for your order must be made <b>at most 6 hours</b> before the order's designated time.
+                        To ensure a seamless payment process, please transfer the correct amount of money and include a valid payment code when placing your order.
+                        Failure to do so may result in your payment being <b>rejected and not refunded</b>.
+                    </p>
+                    <p>
+                        Our team is committed to providing you with a reliable and secure gaming experience.
+                        Thank you for choosing GameGuard as your preferred gaming destination!
+                    </p>
+                </main>
+            </article>
+            <button class="form-button light-button" id="continue">Continue</button>
+        </div>
+        <div class="container" id="form-container" hidden>
+            <form class="form" id="login">
+                <h1 class="form-title">Login</h1>
+                <div class="form-message" id="message-box"></div>
+
+                <input class="form-input" type="text" oninput="trim_name(this)" placeholder="Enter your Firstname" id="firstname" required autofocus>
+                <input class="form-input" type="text" oninput="trim_name(this)" placeholder="Enter your Lastname" id="lastname" required>
+
+                <button class="form-button">Login</button>
+                <p class="form-text">
+                    <a class="form-link" id="goto-signup">Don't have an account?</a>
+                </p>
+            </form>
+
+            <form class="form" id="signup">
+                <h1 class="form-title">Create Account</h1>
+                <div class="form-message" id="message-box"></div>
+
+                <input class="form-input" type="text" oninput="trim_name(this)" placeholder="Enter your Firstname" id="firstname" required autofocus>
+                <input class="form-input" type="text" oninput="trim_name(this)" placeholder="Enter your Lastname" id="lastname" required>
+                <input class="form-input" type="text" oninput="trim_number(this, 11)" placeholder="Enter your Mobile Number" id="mobile" required>
+                <input class="form-input" type="text" onblur="check_email(this)" placeholder="Enter your Email Address" id="email" required>
+                
+                <select class="form-input" id="plan" required>
+                    <option value="1 Month - 10 GB">1 Month - 10 GB (70T)</option>
+                    <option value="1 Month - 30 GB" selected>1 Month - 30 GB (150T)</option>
+                    <option value="1 Month - 50 GB">1 Month - 50 GB (225T)</option>
+                    <option value="1 Month - 80 GB">1 Month - 80 GB (320T)</option>
+                    <option value="1 Month - 120 GB">1 Month - 120 GB (420T)</option>
+                </select>
+                <select class="form-input" id="card" required>
+                    <option value="6219861919685171" selected>6219-8619-1968-5171 (Arshia Dadras)</option>
+                    <option value="5022291300825914">5022-2913-0082-5914 (Arshia Dadras)</option>
+                    <option value="6221061059749541">6221-0610-5974-9541 (Artin Safaei)</option>
+                </select>
+                <input class="form-input" type="text" oninput="trim_number(this)" placeholder="Enter your Payment Code" id="code" required>
+
+                <button class="form-button">Signup</button>
+                <p class="form-text">
+                    <a class="form-link" id="goto-login">Already have an account?</a>
+                </p>
+            </form>
+
+            <form class="form" id="renew">
+                <h1 class="form-title">Reinstate Subscription</h1>
+                <div class="form-message" id="message-box"></div>
+
+                <input class="form-input" type="text" oninput="trim_name(this)" id="firstname" disabled>
+                <input class="form-input" type="text" oninput="trim_name(this)" id="lastname" disabled>
+                
+                <select class="form-input" id="plan" required>
+                    <option value="1 Month - 10 GB">1 Month - 10 GB (70T)</option>
+                    <option value="1 Month - 30 GB" selected>1 Month - 30 GB (150T)</option>
+                    <option value="1 Month - 50 GB">1 Month - 50 GB (225T)</option>
+                    <option value="1 Month - 80 GB">1 Month - 80 GB (320T)</option>
+                    <option value="1 Month - 120 GB">1 Month - 120 GB (420T)</option>
+                </select>
+                <select class="form-input" id="card" required>
+                    <option value="6219861919685171" selected>6219-8619-1968-5171 (Arshia Dadras)</option>
+                    <option value="5022291300825914">5022-2913-0082-5914 (Arshia Dadras)</option>
+                    <option value="6221061059749541">6221-0610-5974-9541 (Artin Safaei)</option>
+                </select>
+                <input class="form-input" type="text" oninput="trim_number(this)" placeholder="Enter your Payment Code" id="code" required autofocus>
+
+                <button class="form-button">Submit</button>
+                <p class="form-text">
+                    <a class="form-link" id="goto-data">Cancel the renewal process?</a>
+                </p>
+            </form>
+        </div>
+
+        <div class="container" id="data-container" hidden>
+            <article class="textPara" id="request-article">
+                <main>
+                    <p>Dear <i id="name"></i>,</p>
+                    <p>
+                        We are pleased to inform you that we have successfully recorded your request for <b id="plan"></b>.
+                        However, please note that your account activation is subject to verification of your payment (Payment Code: <b id="code"></b>) by our support team.
+                    </p>
+                    <p id="contact">
+                        Once your payment is verified, your account will be activated and a message will be sent to your registered phone number (<b id="mobile"></b>) to confirm the same.
+                        Your service link will also be sent to your registered email address (<b id="email"></b>).
+                    </p>
+                    <p>
+                        Thank you for choosing our services.
+                        Please feel free to <a class="form-link" href="mailto:gameguard.contact@gmail.com">contact us</a> if you have any further queries.
+                    </p>
+                    <p>Best regards,<br>The GameGuard Team</p>
+                </main>
+            </article>
+
+            <article class="textPara" id="infinite-article">
+                <main>
+                    <p>Dear Infinite User,</p>
+                    <p>
+                        We hope you're enjoying using GameGuard as much as we enjoy providing it to you.
+                        As an Infinite user, you have unlimited access to our service.
+                        However, we do require that Infinite users pay a small fee per GB of data used.
+                        The current rate is <b>2.5T per GB</b>, and this fee will be charged to your account.
+                    </p>
+                    <p>
+                        To reset your traffic and continue using the service, you'll need to pay your account balance in full <b>anytime you want</b> and contact us.
+                        Once we receive your payment, we'll reset your traffic and you'll be able to continue using GameGuard.
+                    </p>
+                    <p>
+                        Thank you for choosing our services.
+                        Please feel free to <a class="form-link" href="mailto:gameguard.contact@gmail.com">contact us</a> if you have any further queries.
+                    </p>
+                    <p>Best regards,<br>The GameGuard Team</p>
+                </main>
+            </article>
+
+            <table class="content-table">
+                <thead>
+                    <tr>
+                        <th>Service Name</th>
+                        <th>Service Status</th>
+                        <th>Countdown</th>
+                        <th>Upload / Download</th>
+                        <th>Remaining Traffic</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr onmouseover="this.classList.add('active-row')" onmouseout="this.classList.remove('active-row')">
+                        <td id="name"></td>
+                        <td class="form-warning" id="status">Maintenance</td>
+                        <td id="left"></td>
+                        <td id="usage"></td>
+                        <td id="remain"></td>
+                    </tr>
+                </tbody>
+                <thead>
+                    <tr>
+                        <th>Client Name</th>
+                        <th>Client Status</th>
+                        <th>Countdown</th>
+                        <th>Upload / Download</th>
+                        <th>Remaining Traffic</th>
+                    </tr>
+                </thead>
+                <tbody id="clients">
+                </tbody>
+            </table>
+
+            <div style="text-align: center; margin-bottom: 1rem;">
+                Last update: <b id="time"></b>
+            </div>
+
+            <button class="form-button" id="logout">Logout</button>
+            <button class="form-button light-button" id="update">Update</button>
+            <button class="form-button" id="renew">Renew</button>
+        </div>
+    </body>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'main.js' %}"></script>
+    <script>
+        const csrf_token = "{{ csrf_token }}"
+    </script>
+</html>
