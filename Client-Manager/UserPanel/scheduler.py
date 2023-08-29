@@ -95,8 +95,12 @@ def delete_old_jobs_executions(max_age=3*24*60*60):
 
 def delete_expired_users(max_age=3*24*60*60):
     for inbound in Inbound.objects.using('x-ui').filter(expiry_time__lt=int((time.time() - max_age) * 1000), expiry_time__gt=0):
-        Client.objects.using('x-ui').filter(inbound_id=inbound.id).delete()
-        inbound.delete()
+        if Customer.objects.filter(name=inbound.remark).exists():
+            inbound.total = inbound.up + inbound.down
+            inbound.save(using='x-ui')
+        else:
+            Client.objects.using('x-ui').filter(inbound_id=inbound.id).delete()
+            inbound.delete()
 
 def start():
     if settings.DEBUG:
