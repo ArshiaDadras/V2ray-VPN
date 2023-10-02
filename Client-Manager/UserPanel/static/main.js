@@ -113,12 +113,14 @@ document.addEventListener('DOMContentLoaded', () => {
             else {
                 remain.textContent = `${trim_usage(Math.max(user_data.total - user_data.up - user_data.down, 0))}`
                 remain.classList.remove('form-success', 'form-warning', 'form-error')
-                if (!remain.textContent.endsWith('GB')) {
-                    hideButton = false
+                hideButton = false
+
+                if (!remain.textContent.endsWith('GB'))
                     remain.classList.add('form-error')
-                }
                 else if (parseFloat(remain.textContent.slice(0, -2)) < 5)
                     remain.classList.add('form-warning')
+                else
+                    hideButton = true
             }
 
             const left = contentTable.querySelector('#left')
@@ -131,12 +133,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const diff = Math.max(user_data.expiry_time - Date.now(), 0)
                 left.classList.remove('form-success', 'form-warning', 'form-error')
                 left.textContent = trim_countdown(diff)
-                if (diff < 3 * 24 * 60 * 60 * 1000) {
-                    hideButton = false
+                hideButton = false
+                
+                if (diff < 3 * 24 * 60 * 60 * 1000)
                     left.classList.add('form-error')
-                }
                 else if (diff < 7 * 24 * 60 * 60 * 1000)
                     left.classList.add('form-warning')
+                else
+                    hideButton = true
             }
 
             const table = contentTable.querySelector('#clients')
