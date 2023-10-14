@@ -112,7 +112,8 @@
           "geosite:category-anticensorship",
           "geosite:category-vpnservices",
           "geosite:category-media",
-          "geosite:category-porn"
+          "geosite:category-porn",
+          "geosite:google-ads"
         ],
         "outboundTag": "proxy",
         "type": "field"
