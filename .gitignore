@@ -1,0 +1,6 @@
+**/.DS_Store
+Client-Manager/.env
+**/__pycache__
+Client-Manager/UserPanel/migrations/**
+Client-Manager/db.sqlite3
+Client-Manager/x-ui.db
