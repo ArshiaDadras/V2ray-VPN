@@ -75,23 +75,24 @@
                 <input class="form-input" type="text" onblur="check_email(this)" placeholder="Enter your Email Address" id="email" required>
                 
                 <select class="form-input" id="plan" required>
-                    <option value="1 Month - 10 GB">1 Month - 10 GB (70T | 7T per GB)</option>
-                    <option value="3 Month - 30 GB">3 Month - 30 GB (180T | 6T per GB)</option>
-                    <option value="1 Month - 30 GB" selected>1 Month - 30 GB (150T | 5T per GB)</option>
-                    <option value="3 Month - 90 GB">3 Month - 90 GB (405T | 4.5T per GB)</option>
-                    <option value="1 Month - 50 GB">1 Month - 50 GB (225T | 4.5T per GB)</option>
-                    <option value="3 Month - 150 GB">3 Month - 150 GB (600T | 4T per GB)</option>
-                    <option value="1 Month - 80 GB">1 Month - 80 GB (320T | 4T per GB)</option>
-                    <option value="3 Month - 240 GB">3 Month - 240 GB (840T | 3.5T per GB)</option>
-                    <option value="1 Month - 120 GB">1 Month - 120 GB (420T | 2.5T per GB)</option>
-                    <option value="3 Month - 360 GB">3 Month - 360 GB (1080T | 3T per GB)</option>
+                    <option value="1 Month - 10 GB">1 Month - 10 GB (80T)</option>
+                    <option value="3 Month - 30 GB">3 Month - 30 GB (190T)</option>
+                    <option value="1 Month - 30 GB" selected>1 Month - 30 GB (150T)</option>
+                    <option value="3 Month - 90 GB">3 Month - 90 GB (420T)</option>
+                    <option value="1 Month - 50 GB">1 Month - 50 GB (225T)</option>
+                    <option value="3 Month - 150 GB">3 Month - 150 GB (630T)</option>
+                    <option value="1 Month - 80 GB">1 Month - 80 GB (320T)</option>
+                    <option value="3 Month - 240 GB">3 Month - 240 GB (900T)</option>
+                    <option value="1 Month - 120 GB">1 Month - 120 GB (420T)</option>
+                    <option value="3 Month - 360 GB">3 Month - 360 GB (1150T)</option>
                 </select>
                 <select class="form-input" id="card" required>
-                    <option value="6219861919685171" selected>6219-8619-1968-5171 (Arshia Dadras)</option>
+                    <option value="ZarinPal" selected>Payment Gateway (ZarinPal)</option>
+                    <option value="6219861919685171">6219-8619-1968-5171 (Arshia Dadras)</option>
                     <option value="5022291300825914">5022-2913-0082-5914 (Arshia Dadras)</option>
                     <option value="6221061059749541">6221-0610-5974-9541 (Artin Safaei)</option>
                 </select>
-                <input class="form-input" type="text" oninput="trim_number(this)" placeholder="Enter your Payment Code" id="code" required>
+                <input class="form-input" type="hidden" oninput="trim_number(this)" placeholder="Enter your Payment Code" id="code" required>
 
                 <button class="form-button">Signup</button>
                 <p class="form-text">
@@ -119,11 +120,12 @@
                     <option value="3 Month - 360 GB">3 Month - 360 GB (1150T)</option>
                 </select>
                 <select class="form-input" id="card" required>
-                    <option value="6219861919685171" selected>6219-8619-1968-5171 (Arshia Dadras)</option>
+                    <option value="ZarinPal" selected>Payment Gateway (ZarinPal)</option>
+                    <option value="6219861919685171">6219-8619-1968-5171 (Arshia Dadras)</option>
                     <option value="5022291300825914">5022-2913-0082-5914 (Arshia Dadras)</option>
                     <option value="6221061059749541">6221-0610-5974-9541 (Artin Safaei)</option>
                 </select>
-                <input class="form-input" type="text" oninput="trim_number(this)" placeholder="Enter your Payment Code" id="code" required autofocus>
+                <input class="form-input" type="hidden" oninput="trim_number(this)" placeholder="Enter your Payment Code" id="code" required autofocus>
 
                 <button class="form-button">Submit</button>
                 <p class="form-text">

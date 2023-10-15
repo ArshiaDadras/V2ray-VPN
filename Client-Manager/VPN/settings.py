@@ -53,6 +53,8 @@ EMAIL_HOST_USER = os.getenv('EMAIL_USER')
 DEFAULT_FROM_EMAIL = os.getenv('FROM_EMAIL')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
 
+ZARINPAL_MERCHANT_ID = os.getenv('ZARINPAL_MERCHANT_ID')
+
 SCHEDULER_CONFIG = {
     "apscheduler.jobstores.default": {
         "class": "django_apscheduler.jobstores:DjangoJobStore"

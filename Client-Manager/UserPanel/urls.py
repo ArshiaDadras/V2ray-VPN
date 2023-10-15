@@ -21,4 +21,5 @@ urlpatterns = [
     path('', views.main, name='main'),
     path('api/add-customer', api.add_customer, name='add_customer'),
     path('api/customer-data', api.customer_data, name='customer_data'),
+    path('api/verify-payment', api.verify_payment, name='verify_payment'),
 ]

@@ -1,5 +1,22 @@
+import json
+import requests
+from django.conf import settings
 from django.http import JsonResponse
+from django.shortcuts import redirect
 from .models import Customer, Inbound, Client
+
+plans_prices = {
+    '1 Month - 10 GB': 80,
+    '3 Month - 30 GB': 190,
+    '1 Month - 30 GB': 150,
+    '3 Month - 90 GB': 420,
+    '1 Month - 50 GB': 225,
+    '3 Month - 150 GB': 630,
+    '1 Month - 80 GB': 320,
+    '3 Month - 240 GB': 900,
+    '1 Month - 120 GB': 420,
+    '3 Month - 360 GB': 1150,
+}
 
 def add_customer(request):
     destination_card = request.POST.get('destination_card')
@@ -29,6 +46,23 @@ def add_customer(request):
             return JsonResponse({
                 'message': 'registration is banned',
             }, status=403)
+        
+    if payment_code == '':
+        response = json.loads(requests.request('POST', 'https://api.zarinpal.com/pg/v4/payment/request.json', data={
+            'amount': plans_prices[plan] * 1000,
+            'merchant_id': settings.ZARINPAL_MERCHANT_ID,
+            'callback_url': f'https://{settings.SERVER_NAME}/api/verify-payment',
+            'description': f'{settings.SERVER_NAME} ({firstname} - {lastname})',
+        }).text)
+
+        try:
+            payment_code = response['data']['authority']
+        except Exception:
+            return JsonResponse({
+                'message': 'failed to create payment',
+                'amount': plans_prices[plan],
+                'response': response.text,
+            }, status=400)
 
     customer = Customer(name=firstname+' - '+lastname,
                         payment_code=payment_code,
@@ -46,6 +80,7 @@ def add_customer(request):
 
     return JsonResponse({
         'message': 'customer created',
+        'authority': payment_code,
     })
 
 def customer_data(request):
@@ -85,3 +120,31 @@ def customer_data(request):
     return JsonResponse({
         'message': 'customer not found',
     }, status=404)
+
+def verify_payment(request):
+    authority = request.GET.get('Authority')
+    try:
+        customer = Customer.objects.get(payment_code=authority)
+        if customer.verified:
+            return JsonResponse({
+                'message': 'already verified',
+            }, status=409)
+        
+        response = json.loads(requests.request('POST', 'https://api.zarinpal.com/pg/v4/payment/verify.json', data={
+            'amount': plans_prices[customer.plan] * 1000,
+            'merchant_id': settings.ZARINPAL_MERCHANT_ID,
+            'authority': authority,
+        }).text)
+
+        if response['data']['code'] == 100:
+            customer.verified = True
+            customer.save()
+        else:
+            return JsonResponse({
+                'message': 'payment failed',
+                'response': response,
+            }, status=400)
+    except Exception:
+        pass
+
+    return redirect('main')

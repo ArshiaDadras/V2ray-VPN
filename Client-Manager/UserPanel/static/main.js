@@ -9,7 +9,7 @@ function trim_number(input, max_length=16) {
 }
 
 function check_email(input) {
-    if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(input.value))
+    if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(input.value))
         input.value = ''
 }
 
@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     this.classList.remove('active-row')
                 }
 
-                row.insertCell().innerHTML = client.name
+                row.insertCell().innerHTML = client.name.split(' (')[0]
 
                 const status = row.insertCell()
                 if (client.enable) {
@@ -269,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
     signup.addEventListener('submit', event => {
         event.preventDefault()
 
-        form_data = {
+        const form_data = {
             firstname: signup.querySelector('#firstname').value.trim(),
             lastname: signup.querySelector('#lastname').value.trim(),
             destination_card: signup.querySelector('#card').value,
@@ -288,6 +288,11 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             success: data => {
                 console.log(data)
+                if (form_data.payment_code == '') {
+                    window.location.replace(`https://www.zarinpal.com/pg/StartPay/${data.authority}`)
+                    return
+                }
+
                 user_data = {
                     name: `${form_data.firstname} - ${form_data.lastname}`,
                     destination_card: form_data.destination_card,
@@ -306,14 +311,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (xhr.status == 403)
                     setFormMessage(signup, 'warning', "We're sorry, but our server is currently at full capacity and we are unable to process new registrations at this time. Please try again later or contact our support team for further assistance.")
                 else
-                    setFormMessage(signup, 'error', 'The name you entered is already in use, or the payment code provided has already been redeemed. Please choose a different name or payment code, or contact our support team if you have any questions.')
+                    setFormMessage(signup, 'error', 'The name you entered is already in use, or the payment code provided has already been redeemed. Please choose a different name, check your payment code, or contact our support team if you have any questions.')
             }
         })
     })
     renew.addEventListener('submit', event => {
         event.preventDefault()
 
-        form_data = {
+        const form_data = {
             firstname: renew.querySelector('#firstname').value,
             lastname: renew.querySelector('#lastname').value,
             destination_card: renew.querySelector('#card').value,
@@ -330,6 +335,11 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             success: data => {
                 console.log(data)
+                if (form_data.payment_code == '') {
+                    window.location.replace(`https://www.zarinpal.com/pg/StartPay/${data.authority}`)
+                    return
+                }
+
                 user_order = {
                     'name': `${form_data.firstname} - ${form_data.lastname}`,
                     'destination_card': form_data.destination_card,
@@ -368,7 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
     dataContainer.querySelector('#update').addEventListener('click', event => {
         event.preventDefault()
 
-        name = user_type == 'registered'? user_data.remark: user_data.name
+        const name = user_type == 'registered'? user_data.remark: user_data.name
         $.ajax({
             url: '/api/customer-data',
             type: 'POST',
@@ -390,5 +400,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('Error:', xhr.responseJSON.message)
             }
         })
+    })
+
+    signup.querySelector('#card').addEventListener('change', event => {
+        event.preventDefault()
+
+        const code = signup.querySelector('#code')
+        if (signup.querySelector('#card').value == 'ZarinPal') {
+            code.value = ''
+            code.type = 'hidden'
+            code.required = false
+        }
+        else {
+            code.type = 'text'
+            code.required = true
+        }
+    })
+    renew.querySelector('#card').addEventListener('change', event => {
+        event.preventDefault()
+
+        const code = renew.querySelector('#code')
+        if (renew.querySelector('#card').value == 'ZarinPal') {
+            code.value = ''
+            code.type = 'hidden'
+            code.required = false
+        }
+        else {
+            code.type = 'text'
+            code.required = true
+        }
     })
 })
