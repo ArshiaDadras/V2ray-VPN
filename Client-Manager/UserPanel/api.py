@@ -1,4 +1,5 @@
 import json
+import uuid
 import requests
 from django.conf import settings
 from django.http import JsonResponse
@@ -47,21 +48,23 @@ def add_customer(request):
                 'message': 'registration is banned',
             }, status=403)
         
-    if payment_code == '':
-        response = json.loads(requests.request('POST', 'https://api.zarinpal.com/pg/v4/payment/request.json', data={
+    if destination_card == 'NextPay':
+        response = requests.request('POST', 'https://nextpay.org/nx/gateway/token', data={
+            'api_key': settings.NEXTPAY_API_KEY,
+            'order_id': uuid.uuid4().hex,
             'amount': plans_prices[plan] * 1000,
-            'merchant_id': settings.ZARINPAL_MERCHANT_ID,
             'callback_url': f'https://{settings.SERVER_NAME}/api/verify-payment',
-            'description': f'{settings.SERVER_NAME} ({firstname} - {lastname})',
-        }).text)
+            'payer_name': f'{firstname} - {lastname}',
+            'payer_desc': f'{settings.SERVER_NAME} - {plan}',
+        }).text
 
         try:
-            payment_code = response['data']['authority']
+            payment_code = json.loads(response)['trans_id']
         except Exception:
             return JsonResponse({
                 'message': 'failed to create payment',
                 'amount': plans_prices[plan],
-                'response': response.text,
+                'response': response,
             }, status=400)
 
     customer = Customer(name=firstname+' - '+lastname,
@@ -80,7 +83,7 @@ def add_customer(request):
 
     return JsonResponse({
         'message': 'customer created',
-        'authority': payment_code,
+        'payment_code': payment_code,
     })
 
 def customer_data(request):
@@ -122,21 +125,21 @@ def customer_data(request):
     }, status=404)
 
 def verify_payment(request):
-    authority = request.GET.get('Authority')
+    trans_id = request.GET.get('trans_id')
     try:
-        customer = Customer.objects.get(payment_code=authority)
+        customer = Customer.objects.get(payment_code=trans_id)
         if customer.verified:
             return JsonResponse({
                 'message': 'already verified',
             }, status=409)
         
-        response = json.loads(requests.request('POST', 'https://api.zarinpal.com/pg/v4/payment/verify.json', data={
+        response = requests.request('POST', 'https://nextpay.org/nx/gateway/verify', data={
+            'api_key': settings.NEXTPAY_API_KEY,
+            'trans_id': trans_id,
             'amount': plans_prices[customer.plan] * 1000,
-            'merchant_id': settings.ZARINPAL_MERCHANT_ID,
-            'authority': authority,
-        }).text)
+        }).text
 
-        if response['data']['code'] == 100:
+        if json.loads(response)['code'] == 0:
             customer.verified = True
             customer.save()
         else:

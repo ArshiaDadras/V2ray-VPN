@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
             success: data => {
                 console.log(data)
                 if (form_data.payment_code == '') {
-                    window.location.replace(`https://www.zarinpal.com/pg/StartPay/${data.authority}`)
+                    window.location.replace(`https://nextpay.org/nx/gateway/payment/${data.payment_code}`)
                     return
                 }
 
@@ -336,17 +336,17 @@ document.addEventListener('DOMContentLoaded', () => {
             success: data => {
                 console.log(data)
                 if (form_data.payment_code == '') {
-                    window.location.replace(`https://www.zarinpal.com/pg/StartPay/${data.authority}`)
+                    window.location.replace(`https://nextpay.org/nx/gateway/payment/${data.payment_code}`)
                     return
                 }
 
                 user_order = {
-                    'name': `${form_data.firstname} - ${form_data.lastname}`,
-                    'destination_card': form_data.destination_card,
-                    'mobile': 'provided during registration',
-                    'email': 'provided during registration',
-                    'payment_code': form_data.payment_code,
-                    'plan': form_data.plan
+                    name: `${form_data.firstname} - ${form_data.lastname}`,
+                    destination_card: form_data.destination_card,
+                    mobile: 'provided during registration',
+                    email: 'provided during registration',
+                    payment_code: form_data.payment_code,
+                    plan: form_data.plan
                 }
                 setFormMessage(renew, 'success', 'Your account renewal request has been received and recorded.')
                 showDataContainer()
@@ -406,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault()
 
         const code = signup.querySelector('#code')
-        if (signup.querySelector('#card').value == 'ZarinPal') {
+        if (signup.querySelector('#card').value == 'NextPay') {
             code.value = ''
             code.type = 'hidden'
             code.required = false
@@ -420,7 +420,7 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault()
 
         const code = renew.querySelector('#code')
-        if (renew.querySelector('#card').value == 'ZarinPal') {
+        if (renew.querySelector('#card').value == 'NextPay') {
             code.value = ''
             code.type = 'hidden'
             code.required = false
