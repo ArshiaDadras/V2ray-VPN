@@ -1,3 +1,4 @@
+import os
 import json
 import time
 import uuid
@@ -18,6 +19,9 @@ register_subject='Welcome to GameGuard VPN | Your Account Details Inside!'
 with open('UserPanel/templates/registry_email.html', 'r') as f:
     register_html_message = f.read()
 
+
+def restart_xui():
+    os.system('x-ui restart')
 
 def create_account_for_verified_users():
     for customer in Customer.objects.filter(verified=True):
@@ -122,6 +126,11 @@ def start():
         id='delete_expired_users', replace_existing=True, misfire_grace_time=None
     )
     logging.info('Added job : delete_expired_users')
+    scheduler.add_job(
+        restart_xui, 'cron', hour=0,
+        id='restart_xui', replace_existing=True, misfire_grace_time=None
+    )
+    logging.info('Added job : restart_xui')
 
     register_events(scheduler)
     try:
