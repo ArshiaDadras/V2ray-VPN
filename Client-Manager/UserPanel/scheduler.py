@@ -25,12 +25,20 @@ def restart_xui():
 
 def create_account_for_verified_users():
     for customer in Customer.objects.filter(verified=True):
-        total = int(customer.plan.split(' ')[3]) * (2 ** 30)
+        if customer.plan.split(' ')[3] == 'Unlimited':
+            total = 0
+            devices = int(customer.plan.split(' ')[4][1:])
+        else:
+            total = int(customer.plan.split(' ')[3]) * (2 ** 30)
+            devices = 0
         expiry_time = (int(time.time() / 24 / 60 / 60) + int(customer.plan.split(' ')[0]) * 30) * 24 * 60 * 60 * 1000
         try:
             inbound = Inbound.objects.using('x-ui').get(remark=customer.name)
             inbound.expiry_time = expiry_time
-            inbound.total += total
+            if total:
+                inbound.total += total
+            else:
+                inbound.total = 0
             inbound.enable = True
             inbound.save(using='x-ui')
         except ObjectDoesNotExist:
@@ -41,7 +49,7 @@ def create_account_for_verified_users():
 
             inbound = Inbound.objects.using('x-ui').create(
                 user_id=1, up=0, down=0, total=total, remark=customer.name, enable=True, expiry_time=expiry_time,
-                autoreset=False, ip_alert=False, ip_limit=0, port=port, protocol='vless', settings=json.dumps({
+                autoreset=False, ip_alert=False, ip_limit=devices, port=port, protocol='vless', settings=json.dumps({
                     'clients': [{
                         'id': str(uuid.uuid4()),
                         'email': email,

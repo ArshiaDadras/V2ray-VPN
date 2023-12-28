@@ -105,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const remain = contentTable.querySelector('#remain')
             if (user_data.total == 0) {
-                infinite.hidden = false
                 remain.textContent = 'Infinite'
                 remain.classList.add('form-success')
                 remain.classList.remove('form-warning', 'form-error')
@@ -126,6 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const left = contentTable.querySelector('#left')
             if (user_data.expiry_time == 0) {
+                infinite.hidden = false
                 left.textContent = 'Infinite'
                 left.classList.add('form-success')
                 left.classList.remove('form-warning', 'form-error')
@@ -396,6 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 user_data = data.data
                 user_order = data.order
                 user_type = data.user_type
+                user_clients = data.clients
                 showDataContainer()
             },
             error: (xhr, status, error) => {

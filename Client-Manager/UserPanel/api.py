@@ -17,6 +17,9 @@ plans_prices = {
     '3 Month - 240 GB': 900,
     '1 Month - 120 GB': 420,
     '3 Month - 360 GB': 1150,
+    '1 Month - Unlimited (1 Device)': 200,
+    '1 Month - Unlimited (2 Device)': 300,
+    '1 Month - Unlimited (3 Device)': 400,
 }
 
 def add_customer(request):

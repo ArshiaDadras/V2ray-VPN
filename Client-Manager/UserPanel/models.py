@@ -1,12 +1,12 @@
 from django.db import models
 
 class Customer(models.Model):
-    name = models.CharField(max_length=32, unique=True)
+    name = models.CharField(max_length=64, unique=True)
     payment_code = models.CharField(max_length=16, unique=True)
     destination_card = models.CharField(max_length=16)
     mobile = models.CharField(max_length=32)
-    email = models.CharField(max_length=32)
-    plan = models.CharField(max_length=16)
+    email = models.CharField(max_length=64)
+    plan = models.CharField(max_length=64)
     verified = models.BooleanField(default=False)
 
     def to_json(self):
