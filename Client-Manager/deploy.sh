@@ -41,7 +41,7 @@ server {
 ln -s /etc/nginx/sites-available/VPN /etc/nginx/sites-enabled
 certbot --nginx -d $domain
 
-bash renew.sh
+bash renew_db.sh
 nginx -s reload
 python3 manage.py createsuperuser
 python3 manage.py collectstatic
