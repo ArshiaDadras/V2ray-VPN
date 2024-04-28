@@ -4,7 +4,7 @@ then
 	exit
 fi
 
-apt update && apt upgrade -y
+apt update && apt upgrade -y && apt autoremove -y
 apt install curl socat nodejs npm -y
 npm install pm2 -g
 
