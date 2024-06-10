@@ -121,22 +121,22 @@ def start():
 
     scheduler.add_job(
         create_account_for_verified_users, 'cron', minute='*/15',
-        id='create_account_for_verified_users', replace_existing=True, misfire_grace_time=None
+        id='create_account_for_verified_users', replace_existing=True, misfire_grace_time=5*60
     )
     logging.info('Added job : create_account_for_verified_users')
     scheduler.add_job(
         delete_old_jobs_executions, 'cron', hour=0,
-        id='delete_old_jobs_executions', replace_existing=True, misfire_grace_time=None
+        id='delete_old_jobs_executions', replace_existing=True, misfire_grace_time=5*60
     )
     logging.info('Added job : delete_old_jobs_executions')
     scheduler.add_job(
         delete_expired_users, 'cron', hour=0,
-        id='delete_expired_users', replace_existing=True, misfire_grace_time=None
+        id='delete_expired_users', replace_existing=True, misfire_grace_time=5*60
     )
     logging.info('Added job : delete_expired_users')
     scheduler.add_job(
         restart_xui, 'cron', hour=0,
-        id='restart_xui', replace_existing=True, misfire_grace_time=None
+        id='restart_xui', replace_existing=True, misfire_grace_time=5*60
     )
     logging.info('Added job : restart_xui')
 
